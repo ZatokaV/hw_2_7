@@ -26,7 +26,9 @@ def query_2(subject_id: int):
     ).select_from(Grade).join(Student).join(Subject).filter(
         Subject.id == subject_id
     ).group_by(
-        Subject.id,                                                                                         Student.id).order_by(
+        Subject.id,
+        Student.id
+    ).order_by(
         desc("avg_grade")
     ).first()
 
@@ -230,7 +232,7 @@ def query_12(team_id: int, subject_id: int):
 
 if __name__ == '__main__':
     # query_1()
-    # query_2(7)
+    query_2(7)
     # query_3(5)
     # query_4()
     # query_5(2)
@@ -240,4 +242,4 @@ if __name__ == '__main__':
     # query_9(33)
     # query_10(3, 23)
     # query_11(34, 2)
-    query_12(3, 7)
+    # query_12(3, 7)
