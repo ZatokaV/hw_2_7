@@ -66,12 +66,13 @@ def query_4():
 
 # Знайти які курси читає певний викладач.
 def query_5(teacher_id: int):
-    all_subjects = []
-    name_student = ''
     teacher_subject = session.query(
         Teacher.name,
         Subject.subject_name,
     ).select_from(Subject).join(Teacher).filter(Teacher.id == teacher_id).all()
+
+    all_subjects = []
+    name_student = ''
     for tuples in teacher_subject:
         name_student = tuples[0]
         all_subjects.append(tuples[1])
@@ -80,12 +81,13 @@ def query_5(teacher_id: int):
 
 # Знайти список студентів у певній групі.
 def query_6(group_id: int):
-    student_list = []
-    group_name = ''
     students_in_groups = session.query(
         Student.name,
         Team.team_name
     ).select_from(Student).join(Team).filter(Team.id == group_id).all()
+
+    student_list = []
+    group_name = ''
     for tuples in students_in_groups:
         student_list.append(tuples[0])
         group_name = tuples[1]
@@ -94,9 +96,6 @@ def query_6(group_id: int):
 
 # Знайти оцінки студентів у окремій групі з певного предмета.
 def query_7(subject_id: int, group_id: int):
-    all_grades = []
-    group = ''
-    subject = ''
     grades_for_subject_in_group = session.query(
         Grade.grades,
         Subject.subject_name,
@@ -105,6 +104,10 @@ def query_7(subject_id: int, group_id: int):
         Subject.id == subject_id,
         Team.id == group_id
     )).all()
+
+    all_grades = []
+    group = ''
+    subject = ''
     for tuples in grades_for_subject_in_group:
         all_grades.append(tuples[0])
         subject = tuples[1]
@@ -114,14 +117,15 @@ def query_7(subject_id: int, group_id: int):
 
 # Знайти середній бал, який ставить певний викладач зі своїх предметів.
 def query_8(teacher_id: int):
-    avg_grade = ''
-    teacher = ''
     average_for_teacher = session.query(
         func.round(func.avg(Grade.grades), 2).label('avg_grade'),
         Teacher.name
     ).select_from(Grade).join(Subject).join(Teacher).group_by(Teacher.name).filter(
         Subject.teacher_id == teacher_id
     ).all()
+
+    avg_grade = ''
+    teacher = ''
     for tuples in average_for_teacher:
         avg_grade = tuples[0]
         teacher = tuples[1]
@@ -130,14 +134,15 @@ def query_8(teacher_id: int):
 
 # Знайти список курсів, які відвідує певний студент.
 def query_9(student_id: int):
-    student = ''
-    all_subjects = []
     student_courses = session.query(
         Student.name,
         Subject.subject_name
     ).select_from(Student).join(Grade).join(Subject).filter(
         Student.id == student_id
     ).all()
+
+    student = ''
+    all_subjects = []
     for tuples in student_courses:
         student = tuples[0]
         all_subjects.append(tuples[1])
@@ -146,9 +151,6 @@ def query_9(student_id: int):
 
 # Список курсів, які певному студенту читає певний викладач.
 def query_10(teacher_id: int, student_id: int):
-    all_subject = []
-    student = ''
-    teacher = ''
     courses_for_student_from_teacher = session.query(
         Student.name,
         Subject.subject_name,
@@ -157,6 +159,10 @@ def query_10(teacher_id: int, student_id: int):
         Student.id == student_id,
         Teacher.id == teacher_id
     )).all()
+
+    all_subject = []
+    student = ''
+    teacher = ''
     for tuples in courses_for_student_from_teacher:
         student = tuples[0]
         all_subject.append(tuples[1])
@@ -176,7 +182,7 @@ def query_11(student_id: int, teacher_id: int):
     )).group_by(
         Student.id,
         Teacher.id).all()
-    print(avg_from_teacher_to_student)
+
     temp_list = []
     for el in avg_from_teacher_to_student:
         for item in el:
@@ -232,7 +238,7 @@ def query_12(team_id: int, subject_id: int):
 
 if __name__ == '__main__':
     # query_1()
-    query_2(7)
+    # query_2(7)
     # query_3(5)
     # query_4()
     # query_5(2)
@@ -242,4 +248,4 @@ if __name__ == '__main__':
     # query_9(33)
     # query_10(3, 23)
     # query_11(34, 2)
-    # query_12(3, 7)
+    query_12(3, 7)
